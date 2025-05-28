@@ -1,28 +1,42 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using System.Collections.Generic;
+using WebApp.Data;
 
 namespace WebApp.Controllers 
 {
     public class TaskController : Controller
     {
-        static List<TaskItem> tasks = new List<TaskItem>();
+        private readonly AppDbContext _context;
 
+        public TaskController(AppDbContext context)
+       {
+        _context = context;
+       }
         public IActionResult Index()
         {
-            return View(tasks);
+          var tasks = _context.Tasks.ToList();
+          return View(tasks);
         }
 
-        public IActionResult Add(string description)
-        {
-            tasks.Add(new TaskItem { Id = tasks.Count + 1, Description = description });
-            return RedirectToAction("Index");
-        }
+    public IActionResult Add(string description)
+{
+    var task = new TaskItem { Description = description };
+    _context.Tasks.Add(task);
+    _context.SaveChanges();
+    return RedirectToAction("Index");
+}
 
-        public IActionResult Delete(int id)
-        {
-            tasks.RemoveAll(t => t.Id == id);
-            return RedirectToAction("Index");
-        }
+    public IActionResult Delete(int id)
+    {
+    var task = _context.Tasks.Find(id);
+    if (task != null)
+    {
+        _context.Tasks.Remove(task);
+        _context.SaveChanges();
+    }
+    return RedirectToAction("Index");
+    }
+
     }
 }
