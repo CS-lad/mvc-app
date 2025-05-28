@@ -112,11 +112,14 @@
     <button type="submit">Add</button>
 </form>
 
+
+
 <ul>
     @foreach (var task in Model)
     {
         <li>
             @task.Description 
+            <a asp-action="Edit" asp-route-id="@task.Id" style="color:blue; margin-left:10px;">Edit</a>
            <a asp-action="Delete" asp-route-id="@task.Id" style="color:red; margin-left:10px;">Delete</a>
         </li>
     }

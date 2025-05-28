@@ -1,0 +1,13 @@
+@model WebApp.Models.TaskItem
+
+<h2>Edit Task</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div>
+        <label>Description</label>
+        <input asp-for="Description"  />
+    </div>
+    <button type="submit">Save</button>
+    <a asp-action="Index">Cancel</a>
+</form>
